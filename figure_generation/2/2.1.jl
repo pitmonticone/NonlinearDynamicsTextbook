@@ -10,15 +10,11 @@ using DynamicalSystems, PyPlot, Roots
 dTdt(T, ε = 0.65, α=αtan, s= 1.0) = s*(1 - α(T)) - 1.6e-10 * ε * T^4
 dTdt(T; ε = 0.65, α=αtan, s = 1.0) = dTdt(T, ε, α, s)
 
-# Ts = 200:400.0
-# plot(Ts, dTdt.(Ts))
-# plot(Ts, dTdt.(Ts, 0.2))
-# plot(Ts, dTdt.(Ts, 0.9))
-# axhline(0)
 
 fig = figure(figsize = (figx/2, figy))
 Ts = 200:0.5:320.0
 arrows = 210:10:300 |> collect
+
 deleteat!(arrows, findfirst(isequal(260), arrows))
 roots = Roots.find_zeros(dTdt, Ts[1], Ts[end])
 plot(Ts, dTdt.(Ts), color = "C0", label = "\$dT/dt\$")
@@ -31,7 +27,14 @@ for (i, r) in enumerate(roots)
     plot(r, 0, marker = "o", markeredgecolor = "k", markerfacecolor = iseven(i) ? "w" : "k",
     markersize = 15, mew = 2)
 end
-for r in arrows
+
+rvec = [207, 217, 227,240, 250, 272, 282, 291,306]
+
+# for r in arrows
+for ir = 1:9
+    r = rvec[ir]
+
+    println(r)
     f = dTdt(r)
     x, dx = f > 0 ? (r - 5, 5) : (r+5, -5)
     ff = abs(1.2f)^2 + 0.01
@@ -43,4 +46,4 @@ legend()
 xticks(200:40:320)
 xlabel("\$T\$"; labelpad = -15)
 tight_layout(pad=0.3)
-wsave(plotsdir("2", "1dstatespace"), fig)
+wsave(plotsdir("2", "1dstatespace_new"), fig)

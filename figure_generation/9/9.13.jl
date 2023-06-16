@@ -1,5 +1,3 @@
-# Fig_GS_Roessler_Lorenz_v2.jl
-# =============================
 
 using DrWatson
 @quickactivate "NonlinearDynamicsTextbook"
@@ -69,9 +67,6 @@ end
 
 
 
-#  ------------------ main program --------------------------
-
-
 @time begin
 
 # parameters and initial values
@@ -96,11 +91,10 @@ dyxvec = zeros(ncc)
 CLEvec = zeros(ncc)
 
 ttrans = 2000  # transient time
-tattr = 50000   # time for averaging on attractor
+tattr = 60000  # time for averaging on attractor
 
 d = 6  
-τ = 1  #  3
-tsamp = 0.1 # 0.1 
+τ = 1 
 
 
 # coupling parameter loop
@@ -119,8 +113,8 @@ for icc = 1:ncc
 
    # attractor  
    # ---------
- 
     tspan = (0., tattr)
+    tsamp = 0.1
     y_init = sol.u[end]
     prob = ODEProblem(Roessler_Lorenz_aux_ODE, y_init, tspan, p)
     sol = solve(prob, Tsit5(), reltol=1e-8, abstol=1e-8, maxiters = 1e7, saveat = tsamp)
@@ -143,7 +137,7 @@ for icc = 1:ncc
    # Synchronization error (auxiliary system method)
    # ----------------------------------------------- 
     GSerror = 0.
-    for its = 1:nts # .... can this be done without a loop?
+    for its = 1:nts 
         GSerror = GSerror +  norm(ypts[:,its] - zpts[:,its] )
     end
     GSerror = GSerror / nts
@@ -174,7 +168,7 @@ for icc = 1:ncc
    tspan = (0., tattr)
    y_init = sol.u[end]
    y_init[7:9] = [1 0 0]
-   ncle = 50000 # Lyapunov steps
+   ncle = 60000 # Lyapunov steps
    csum = 0.
 
    for icle = 1:ncle
@@ -199,34 +193,28 @@ for icc = 1:ncc
    CLE = csum / (ncle-300)
    CLEvec[icc] = CLE
 
-# println("c=",cc,"  GS=",GSerror, "  ccm_xy=", cxyvec[icc],"  ccm_yx=",cyxvec[icc],"  dxy=",dxyvec[icc],"  dyx=",dyxvec[icc],"  CLE=", CLE)
 println("c=",cc,"  GS=",GSerror, "  ccm_xy=", cxyvec[icc],"  ccm_yx=",cyxvec[icc],"  CLE=", CLE)
 
-
-
 end
-
 
 end  # of time
 
 # %% plot
 
-fig = plt.figure(figsize=(0.5*figx,figy))
+fig = plt.figure(figsize=(0.55*figx,figy))
 
 plt.plot(ccvec,GSvec ./maximum(GSvec),color=COLORS[1])  # ,linewidth=1)
 plt.plot(ccvec,CLEvec ./ maximum(CLEvec),color=COLORS[2], ls = "--") 
 
 plt.plot(ccvec,cxyvec,color=COLORS[3])
 plt.plot(ccvec,cyxvec,color=COLORS[4], ls = "-.")
-
 plt.xlabel(L"k"; labelpad = -20) 
-
 
 ax = gca()
 ax.set_xlim([ccmin,ccmax])
 ax.set_xticks(1:2:11)
-# ax.set_ylim([-2.1,2.6])
-ax.legend([L"E"; L"\lambda_1^{\rm{CLE}}";
+
+ax.legend([L"E/E_{\rm{max}}"; L"\lambda_1^{\rm{CLE}}/\lambda_{1 \rm{max}}^{\rm{CLE}}";
            "CCM: \$x_1 \\to y_1\$"; "CCM: \$y_1 \\to x_1\$"],
          bbox_to_anchor=(0., 1.02, 1., .102), loc="lower left",
         ncol=2, mode="expand", borderaxespad=0, handlelength=2,
@@ -234,3 +222,4 @@ ax.legend([L"E"; L"\lambda_1^{\rm{CLE}}";
 
 fig.tight_layout(pad=0.3)
 wsave(plotsdir("9", "generalized_sync"), fig)
+

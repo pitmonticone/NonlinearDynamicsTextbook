@@ -38,12 +38,12 @@ for (i, k) in enumerate(krange)
     @show i, k
     set_parameter!(croesslers, 6, k)
     set_parameter!(croesslers, 7, k)
-    λs[i, :] .= lyapunovspectrum(croesslers, 100000, 4; Ttr = 5000, diffeq...)
+    λs[i, :] .= lyapunovspectrum(croesslers, 3000000, 4; Ttr = 10000, diffeq...) 
 
     # computation of phase difference -----
-    T = 20000 # length of time series 
+    T = 300000 # length of time series 
     Δt = 0.1
-    X = trajectory(croesslers, T; Ttr = 5000, Δt, diffeq...)  # which initial conditions are used?
+    X = trajectory(croesslers, T; Ttr = 10000, Δt, diffeq...)  
     t = 0:Δt:T
     x1vec = X[:, 1]
     x2vec = X[:, 2]
@@ -82,8 +82,10 @@ file, path = produce_or_load(
     prefix = "croesslers_spectrum", tag = false,
 )
 
-@unpack λs, sync_error = file
+# @unpack λs, sync_error = file
+@unpack λs, sync_error, kmin, kmax, kl = file
 
+krange = range(kmin, kmax; length = kl)
 
 # %% Plot
 fig = figure(figsize = (0.66figx, 1.2figy))
@@ -92,7 +94,7 @@ ax1 = plt.subplot(gs[1])
 ax2 = plt.subplot(gs[2])
 
 ax1.plot(krange, λs)
-# ax.set_xlabel("\$k\$")        
+    
 ax1.set_xticklabels([])
 ax1.set_ylabel("\$\\lambda_i\$")
 ax1.set_xlim(kmin,kmax)

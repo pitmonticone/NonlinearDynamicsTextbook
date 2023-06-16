@@ -2,12 +2,12 @@
 
 ![**Nonlinear Dynamics: A concise introduction interlaced with code**](cover.png)
 
-This repository holds material related with the textbook _Nonlinear Dynamics: A concise introduction interlaced with code_, co-authored by George Datseris and Ulrich Parlitz. The textbook will be published by Springer-Nature, in the series Undergraduate Lecture Notes in Physics.
+This repository holds material related with the textbook _Nonlinear Dynamics: A concise introduction interlaced with code_, co-authored by George Datseris and Ulrich Parlitz. The textbook is published by Springer-Nature, in the series Undergraduate Lecture Notes in Physics.
 
 > https://link.springer.com/book/10.1007/978-3-030-91032-7
 
 
-**Please do not open issues to ask questions on installing and running Julia or Julia packages, or questions on nonlinear dynamics in this repository.** Instead, open issues directly related with the book: found typos, problems with the source code contained here, suggestions for improvement of existing book sections, suggestions for new book sections, contributing new exercises, new multiple choice questions, etc. All contributions will be properly acknowledged whenever a new edition is out.
+**Please do not open issues to ask questions on installing and running Julia or Julia packages, or questions on nonlinear dynamics in this repository.** Instead, open issues directly related with the book: found typos, problems with the source code contained here, suggestions for improvement of existing book sections, suggestions for new book sections, contributing new exercises, new multiple choice questions, etc. All significant contributions will be properly acknowledged whenever a new edition is out.
 
 **Contents**
 1. [Sample material](#sample-material)
